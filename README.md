@@ -85,7 +85,7 @@ Crea una nueva conexión PostgreSQL con los siguientes parámetros:
 - Host: 127.0.0.1
 - Port: 5432
 - User: almacen_user
-- Password: Almacen2025
+- Password: Sistem2025
 - Database: sistema_almacen
 Haz clic en "Test" y si aparece "Connection successful", guarda la configuración.
 
@@ -93,9 +93,10 @@ Haz clic en "Test" y si aparece "Connection successful", guarda la configuració
 6. Migrar Base de Datos
 php artisan migrate
 
+7. Levantar el Servidos local 
+php artisan serve
 
-✅ Verificación
-Una vez completados todos los pasos, el proyecto debería estar ejecutándose correctamente. Verifica que todos los servicios estén funcionando y que puedas acceder a la aplicación.
+
 
 
 
