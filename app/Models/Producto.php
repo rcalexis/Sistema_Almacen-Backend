@@ -26,6 +26,16 @@ class Producto extends Model
         'estatus' => 'boolean',
         'fecha_creacion' => 'datetime',
     ];
+    protected static function boot()
+    {
+    parent::boot();
+
+    static::creating(function ($model) {
+        if (empty($model->fecha_creacion)) {
+            $model->fecha_creacion = now();
+        }
+    });
+    }
 
     public function creador()
     {

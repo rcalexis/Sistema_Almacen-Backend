@@ -24,6 +24,16 @@ class Movimiento extends Model
     protected $casts = [
         'fecha_movimiento' => 'datetime',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->fecha_movimiento)) {
+                $model->fecha_movimiento = now();
+            }
+        });
+    }
 
     public function producto()
     {

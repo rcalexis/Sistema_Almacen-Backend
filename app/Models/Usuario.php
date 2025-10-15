@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -35,6 +36,18 @@ class Usuario extends Authenticatable
         'estatus' => 'boolean',
         'fecha_creacion' => 'datetime',
     ];
+
+    //llena automaticamente la fecha de creacion
+     protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->fecha_creacion)) {
+                $model->fecha_creacion = now();
+            }
+        });
+    }
 
     public function getAuthIdentifierName()
     {
