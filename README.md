@@ -6,7 +6,7 @@ Este proyecto es un sistema de gestión de almacén desarrollado con Laravel y P
 
 ## 📋 Prerrequisitos
 
-Antes de comenzar, asegúrate de tener instaladas las siguientes tecnologías:
+Antes de comenzar asegurate de tener instaladas las siguientes tecnologias:
 
 ### 🔧 Software Requerido
 
@@ -26,9 +26,9 @@ Antes de comenzar, asegúrate de tener instaladas las siguientes tecnologías:
 
 ---
 
-## ⚙️ Configuración del Entorno
+## ⚙️ Configuracion del Entorno
 
-### 🔧 Configuración de PHP
+### 🔧 Configuracion de PHP
 
 Después de instalar PHP:
 
@@ -44,7 +44,7 @@ extension=openssl
 extension=curl
 extension=fileinfo
 
-📦 Instalación de Laravel Installer
+📦 Instalacion de Laravel Installer
 
 composer global require laravel/installer
 
@@ -87,13 +87,13 @@ Crea una nueva conexión PostgreSQL con los siguientes parámetros:
 - User: almacen_user
 - Password: Sistem2025
 - Database: sistema_almacen
-Haz clic en "Test" y si aparece "Connection successful", guarda la configuración.
+Haz clic en "Test" y si aparece "Connection successful", guarda la configuracion.
 
 
 6. Migrar Base de Datos
 php artisan migrate
 
-7. Levantar el Servidos local 
+7. Levantar el Servidos local
 php artisan serve
 
 
