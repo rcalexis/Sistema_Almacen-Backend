@@ -1,3 +1,31 @@
+CREATE OR REPLACE FUNCTION fn_buscar_usuario_por_correo(p_correo VARCHAR)
+RETURNS TABLE(
+    id_usuario BIGINT,
+    nombre VARCHAR,
+    correo VARCHAR,
+    contrasena VARCHAR,
+    id_rol BIGINT,
+    nombre_rol VARCHAR,
+    estatus BOOLEAN,
+    fecha_creacion TIMESTAMP
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT u.id_usuario,
+           u.nombre,
+           u.correo,
+           u.contrasena,
+           u.id_rol,
+           r.nombre AS nombre_rol,
+           u.estatus,
+           u.fecha_creacion
+    FROM usuarios u
+    JOIN roles r ON u.id_rol = r.id
+    WHERE u.correo = p_correo;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION fn_listar_usuarios()
 RETURNS TABLE(
     id_usuario BIGINT,
