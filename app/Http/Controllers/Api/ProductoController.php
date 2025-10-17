@@ -193,5 +193,61 @@ class ProductoController extends Controller
         }
     }
     
+    public function darBajaProducto(Request $request, $id)
+    {
+        try {
+            $usuario = $request->user();
+
+            DB::statement('SELECT fn_dar_baja_producto(?, ?)', [
+                $id,
+                $usuario->id_usuario
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Producto dado de baja correctamente'
+            ]);
+
+        } catch (PDOException $e) {
+            $mensaje = $e->getMessage();
+            if (str_contains($mensaje, 'Solo los administradores')) {
+                return response()->json([
+                    'mensaje' => 'No tienes permisos para dar de baja productos'
+                ], 403);
+            }
+            return response()->json([
+                'mensaje' => 'Error en la base de datos',
+                'error' => $mensaje
+            ], 500);
+        }
+    }
+
+    public function reactivarProducto(Request $request, $id)
+    {
+        try {
+            $usuario = $request->user();
+
+            DB::statement('SELECT fn_reactivar_producto(?, ?)', [
+                $id,
+                $usuario->id_usuario
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Producto reactivado correctamente'
+            ]);
+
+        } catch (PDOException $e) {
+            $mensaje = $e->getMessage();
+            if (str_contains($mensaje, 'Solo los administradores')) {
+                return response()->json([
+                    'mensaje' => 'No tienes permisos para reactivar productos'
+                ], 403);
+            }
+            return response()->json([
+                'mensaje' => 'Error en la base de datos',
+                'error' => $mensaje
+            ], 500);
+        }
+    }
+
     
 }
