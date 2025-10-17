@@ -92,6 +92,106 @@ class ProductoController extends Controller
         }
     }
 
+    public function aumentarInventario(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'cantidad' => 'required|integer|min:1'
+            ]);
+
+            $usuario = $request->user();
+
+            DB::statement('SELECT fn_aumentar_inventario(?, ?, ?)', [
+                $id,
+                $request->cantidad,
+                $usuario->id_usuario
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Inventario aumentado correctamente'
+            ]);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'mensaje' => 'Error en la validacion',
+                'errores' => $e->errors()
+            ], 422);
+        } catch (PDOException $e) {
+            $mensaje = $e->getMessage();
+            if (str_contains($mensaje, 'Solo los administradores')) {
+                return response()->json([
+                    'mensaje' => 'No tienes permisos para aumentar inventario'
+                ], 403);
+            } elseif (str_contains($mensaje, 'No se puede aumentar')) {
+                return response()->json([
+                    'mensaje' => 'No se puede realizar la operacion',
+                    'error' => $mensaje
+                ], 400);
+            } elseif (str_contains($mensaje, 'La cantidad debe ser')) {
+                return response()->json([
+                    'mensaje' => 'Cantidad invalida',
+                    'error' => $mensaje
+                ], 400);
+            }
+            return response()->json([
+                'mensaje' => 'Error en la base de datos',
+                'error' => $mensaje
+            ], 500);
+        }
+    }
+
+    public function sacarInventario(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'cantidad' => 'required|integer|min:1'
+            ]);
+
+            $usuario = $request->user();
+
+            DB::statement('SELECT fn_sacar_inventario(?, ?, ?)', [
+                $id,
+                $request->cantidad,
+                $usuario->id_usuario
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Inventario reducido correctamente'
+            ]);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'mensaje' => 'Error en la validacion',
+                'errores' => $e->errors()
+            ], 422);
+        } catch (PDOException $e) {
+            $mensaje = $e->getMessage();
+            if (str_contains($mensaje, 'Solo los almacenistas')) {
+                return response()->json([
+                    'mensaje' => 'No tienes permisos para sacar productos'
+                ], 403);
+            } elseif (str_contains($mensaje, 'No hay suficientes productos')) {
+                return response()->json([
+                    'mensaje' => 'Inventario no insuficiente',
+                    'error' => $mensaje
+                ], 400);
+            } elseif (str_contains($mensaje, 'No se puede sacar')) {
+                return response()->json([
+                    'mensaje' => 'No se puede realizar la operacion',
+                    'error' => $mensaje
+                ], 400);
+            } elseif (str_contains($mensaje, 'La cantidad debe ser')) {
+                return response()->json([
+                    'mensaje' => 'Cantidad invalida',
+                    'error' => $mensaje
+                ], 400);
+            }
+            return response()->json([
+                'mensaje' => 'Error en la base de datos',
+                'error' => $mensaje
+            ], 500);
+        }
+    }
     
     
 }
