@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UsuarioController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MovimientoController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -28,6 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{id}/sacar', [ProductoController::class, 'sacarInventario']);
         Route::patch('/{id}/baja', [ProductoController::class, 'darBajaProducto']);
         Route::patch('/{id}/reactivar', [ProductoController::class, 'reactivarProducto']);
+    });
+
+    
+    Route::prefix('movimientos')->group(function () {
+        Route::get('/', [MovimientoController::class, 'listarMovimientos']);
     });
 
 });
