@@ -69,8 +69,8 @@ RETURNS BIGINT
 AS $$
 DECLARE
     es_admin BOOLEAN;
+    nuevo_id BIGINT;
 BEGIN
-  
     SELECT EXISTS(
         SELECT 1 FROM usuarios u 
         JOIN roles r ON u.id_rol = r.id 
@@ -89,6 +89,7 @@ BEGIN
     RETURN nuevo_id;
 END;
 $$ LANGUAGE plpgsql;
+
 
 -- solo admin
 CREATE OR REPLACE FUNCTION fn_aumentar_inventario(
@@ -170,7 +171,7 @@ BEGIN
     END IF;
 
     IF p_cantidad > cantidad_disponible THEN
-        RAISE EXCEPTION 'No hay suficiente inventario', cantidad_disponible;
+        RAISE EXCEPTION 'No hay suficiente inventario, Disponible: %', cantidad_disponible;
     END IF;
 
     IF p_cantidad <= 0 THEN
