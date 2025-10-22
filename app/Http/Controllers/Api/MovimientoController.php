@@ -26,7 +26,7 @@ class MovimientoController extends Controller
             $errorMessage = $e->getMessage();
             if (str_contains($errorMessage, 'RAISE')) {
                 preg_match('/ERROR: (.*)/', $errorMessage, $matches);
-                $errorMessage = $matches[1] ?? 'No tiene permisos para realizar esta accion.';
+                $errorMessage = $matches[1] ?? 'No tiene permisos para realizar esta accion';
                 return response()->json(['mensaje' => $errorMessage], 403);
             }
 
