@@ -12,22 +12,28 @@ class MovimientoController extends Controller
 {
     public function listarMovimientos(Request $request)
     {
-        try {
+            try {
             $tipo = $request->query('tipo_movimiento');
             $usuarioId = $request->user()->id_usuario;
             
             $movimientos = DB::select('SELECT * FROM fn_listar_movimientos(?, ?)', [
-                $usuarioId,
-                in_array($tipo, ['entrada', 'salida']) ? $tipo : null
+                $usuarioId,                                          
+                in_array($tipo, ['entrada', 'salida']) ? $tipo : null 
             ]);
 
             return response()->json($movimientos);
         } catch (PDOException $e) {
+            $errorMessage = $e->getMessage();
+            if (str_contains($errorMessage, 'RAISE')) {
+                preg_match('/ERROR: (.*)/', $errorMessage, $matches);
+                $errorMessage = $matches[1] ?? 'No tiene permisos para realizar esta accion.';
+                return response()->json(['mensaje' => $errorMessage], 403);
+            }
+
             return response()->json([
                 'mensaje' => 'Error al obtener los movimientos',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
-
 }
